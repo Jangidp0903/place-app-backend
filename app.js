@@ -7,11 +7,11 @@ const userRoutes = require("./routes/users-routes");
 const placesRoutes = require("./routes/places-routes");
 
 const app = express();
-const PORT = 5000;
+const PORT = 4000;
 
 mongoose
   .connect(
-    "mongodb+srv://puneetjangid637:admin_puneet_jangid@cluster0.kpaeogh.mongodb.net/places-appDB?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://Admin-Rohan:admin_rohan_sharma@cluster0.2vxj1.mongodb.net/itc-places-app-db"
   )
   .then(() => {
     console.log("Connected To DB");
@@ -24,5 +24,16 @@ mongoose
   });
 
 app.use(bodyParser.json());
-app.use(userRoutes);
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+  next();
+});
+
+app.use("/api/users/", userRoutes);
 app.use(placesRoutes);
